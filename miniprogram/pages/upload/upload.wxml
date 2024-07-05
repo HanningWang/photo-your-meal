@@ -1,0 +1,7 @@
+<view class="container">
+  <!-- Display Selected Image -->
+  <view wx:if="{{imageSrc}}">
+    <image src="{{imageSrc}}" class="uploaded-image"></image>
+  </view>
+  <button bindtap="chooseMedia" class="upload-btn">Choose Image</button>
+</view>

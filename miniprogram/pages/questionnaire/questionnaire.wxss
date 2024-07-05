@@ -1,0 +1,45 @@
+/**questionnaire.wxss**/
+
+page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.scrollarea {
+  flex: 1;
+  overflow-y: hidden;
+}
+
+.questionnaire {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  flex-direction: column;
+}
+
+.questionnaire-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.userinfo-avatar {
+  overflow: hidden;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.form-group {
+  margin-left: 20px;
+  align-items: left;
+  justify-content: left;
+  margin-bottom: 20rpx;
+}
+
+.submit-button {
+  margin-top: 30rpx;
+}

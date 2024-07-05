@@ -1,0 +1,59 @@
+<!--questionnaire.wxml-->
+<scroll-view class="scrollarea" scroll-y type="list">
+  <view class="questionnaire">
+    <view class='questionnaire-header'>
+      <image src="{{avatarUrl}}" class="userinfo-avatar" mode="cover"></image>
+      <text>{{nickName}}</text>
+    </view>
+    <form bindsubmit="formSubmit">
+          <view class="form-group">
+            <label>性别</label>
+            <radio-group name="gender">
+              <label>
+                <radio value="1"/> 男
+              </label>
+              <label>
+                <radio value="0"/> 女
+              </label>
+            </radio-group>
+          </view>
+          <view class="form-group">
+            <label>年龄</label>
+            <input name="age" type="number" min="1" max="120" placeholder="输入年龄"/>
+          </view>
+          <view class="form-group">
+            <label>体重 (kg)</label>
+            <input name="weight" type ="number" min="1" max="260" placeholder="输入体重" />
+          </view>
+          <view class="form-group">
+            <label>运动习惯</label>
+            <radio-group name="habit">
+              <label>
+                <radio value="从不"/> 从不
+              </label>
+              <label>
+                <radio value="偶尔"/> 偶尔
+              </label>
+              <label>
+                <radio value="经常"/> 经常
+              </label>
+            </radio-group>
+          </view>
+          <view class="form-group">
+            <label>目标</label>
+            <radio-group name="goal">
+              <label>
+                <radio value="减重"/> 减脂
+              </label>
+              <label>
+                <radio value="维持"/> 维持
+              </label>
+              <label>
+                <radio value="增肌"/> 增肌
+              </label>
+            </radio-group>
+          </view>
+          <button formType="submit" class="submit-button">Submit</button>
+        </form>
+  </view>
+</scroll-view>

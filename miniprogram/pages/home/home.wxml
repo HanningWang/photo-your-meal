@@ -1,0 +1,37 @@
+<view class="container">
+  <view class='calories'>
+    <view class='calroies-goal'>
+      <text class='calories-title'>卡路里</text>
+      <text class='remaining-text'>剩余 = 目标 - 摄入</text>
+    </view>
+   <view class='calories-graph'>
+    <canvas class='radial-bar' type="2d" id="radialBarCanvas"></canvas>
+    <view class='calories-details'>
+      <text>目标：{{goal}}</text>
+      <text>今日记录: {{meal_num}}</text>
+    </view>
+  </view>
+</view>
+  
+  <view class='nutrition-graph'>
+    <canvas class='horizontal-bar' type="2d" id="horizontalBarCanvas"></canvas>
+  </view>
+
+  <view wx:if="{{userUploaded}}">
+    <view wx:for="{{meals}}" wx:key="index" wx:for-item="meal">
+      <view class="meal_item">
+        <text>记录{{index+1}}: {{meal.title}}</text>
+        <view>
+          <image src="{{meal.img}}" class="meal-img"></image>
+        </view>
+        <text>卡路里： {{meal.calorie}}</text>
+        <text>碳水： {{meal.carb}}</text>
+        <text>蛋白质： {{meal.protein}}</text>
+        <text>脂肪： {{meal.fat}}</text>
+        <view wx:for="{{meal.items}}" wx:key="index">
+          <text>{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
