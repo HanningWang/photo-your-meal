@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40rpx;
+}
+
+.uploaded-image {
+  width: 70%;
+}
+
+.upload-instruction {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 70rpx;
+}
+
+.substitute-btn {
+  margin-top: 15px;
+}
+
+.form-group {
+  margin-top: 20px;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.upload-btn {
+  margin-top: 300rpx;
+}
+
+.on-submit {
+  margin-top: 50rpx;
+}

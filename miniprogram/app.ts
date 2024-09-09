@@ -1,7 +1,6 @@
 // app.ts
 App<IAppOption>({
   globalData: {
-    auth: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiYWIxNDc1OWMtY2Q0MC00ZjBjLWEwNmMtNzUxOWEyNjg0MTQ1IiwidGFyZ2V0X2VuZXJneSI6bnVsbCwiZXhwIjoxNzIwMTkxNTIwfQ.DbUmVsjrXMKTpM-m5btPaU4fCGA_Flf8g9gSoexijU0'
   },
   onLaunch() {
     // 展示本地存储能力

@@ -20,12 +20,12 @@
   <view wx:if="{{userUploaded}}">
     <view wx:for="{{meals}}" wx:key="index" wx:for-item="meal">
       <view class="meal_item">
-        <text>记录{{index+1}}: {{meal.title}}</text>
+        <text>记录{{index+1}}: {{meal.meal_type}}</text>
         <view>
-          <image src="{{meal.img}}" class="meal-img"></image>
+          <image src="{{meal.image_data}}" class="meal-img"></image>
         </view>
-        <text>卡路里： {{meal.calorie}}</text>
-        <text>碳水： {{meal.carb}}</text>
+        <text>卡路里： {{meal.calories}}</text>
+        <text>碳水： {{meal.carbs}}</text>
         <text>蛋白质： {{meal.protein}}</text>
         <text>脂肪： {{meal.fat}}</text>
         <view wx:for="{{meal.items}}" wx:key="index">

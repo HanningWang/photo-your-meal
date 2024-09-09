@@ -22,6 +22,10 @@
             <input name="age" type="number" min="1" max="120" placeholder="输入年龄"/>
           </view>
           <view class="form-group">
+            <label>身高 (cm)</label>
+            <input name="height" type ="number" min="1" max="300" placeholder="输入身高" />
+          </view>
+          <view class="form-group">
             <label>体重 (kg)</label>
             <input name="weight" type ="number" min="1" max="260" placeholder="输入体重" />
           </view>

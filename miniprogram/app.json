@@ -5,12 +5,13 @@
     "pages/home/home",
     "pages/upload/upload",
     "pages/user/user",
+    "pages/summary/summary",
     "pages/logs/logs"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTitleText": "随食拍",
+    "navigationBarBackgroundColor": "#1E90FF"
   },
   "tabBar": {
     "list": [{

@@ -1,0 +1,1 @@
+export const endpoint = 'http://39.105.187.228'

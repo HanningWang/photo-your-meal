@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mealSummary {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30rpx;
+  padding: 20rpx;
+}
+
+.meal_item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+}
+
+.meal_img {
+  width: 60%;
+}
+
+.summary_title {
+  font-weight: bold;
+  font-size: 50rpx;
+}
+
+.summary_meal_type {
+  align-self: flex-start;
+  padding-left: 70rpx;
+  font-size: 36rpx;
+  margin-bottom: 40rpx;
+}
+
+.summary_nutrition {
+  align-self: flex-start;
+  margin-left: 70rpx;
+}

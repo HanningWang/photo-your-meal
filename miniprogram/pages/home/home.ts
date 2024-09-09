@@ -1,6 +1,19 @@
+import { endpoint } from "../../constants/global";
+
 interface Item {
   label: string;
   value: number;
+}
+
+interface Meal {
+  calories: number,
+  carbs: number,
+  fat: number,
+  protein: number,
+  food_details: string,
+  id: number,
+  image_data: string,
+  meal_type: string
 }
 
 Page({
@@ -8,45 +21,34 @@ Page({
     screenWidth: 0,
 
     goal: 2000,
-    meal_num: 1,
-    intake: 1440,
-    carbIntake: 300,
-    carbGoal: 400,
-    proteinIntake: 200,
-    proteinGoal: 275,
-    fatIntake: 150,
-    fatGoal: 195,
+    meal_num: 0,
+    intake: 0,
+    carbIntake: 0,
+    carbGoal: 200,
+    proteinIntake: 0,
+    proteinGoal: 150,
+    fatIntake: 0,
+    fatGoal: 75,
     userUploaded: true,
-    meals: [
-      {
-        title: '午饭',
-        img: '../../images/meal_sample.jpg',
-        calorie: 1440,
-        carb: 300,
-        protein: 275,
-        fat: 150,
-        items: [
-          '京酱肉丝：猪肉 200g，京葱 50g，甜面酱：15g',
-          '西红柿鸡蛋： 西红柿 200g， 鸡蛋 200g',
-          '米饭： 300g'
-        ]
-      }
-    ]
+    meals: Array.of()
   },
   
-  onLoad() {
+  onShow() {
     const app = getApp();
     const systemInfo = wx.getSystemInfoSync();
+    const currentDate = this.getCurrentDateFormatted();
+    const accessToken = wx.getStorageSync('openId');
+    console.log('Access token is Bearer' + accessToken);
     this.setData({
       screenWidth: systemInfo.screenWidth
     });
 
     wx.request({
-      url: 'http://39.105.187.228/user/daily_energy',
+      url: `${endpoint}/user/daily_energy`,
       method: 'GET', // The HTTP method
       header: {
         'accept': 'application/json', // The Accept header
-        'Authorization': app.globalData.auth // The Authorization header
+        'Authorization': `Bearer ${accessToken}` // The Authorization header
       },
       success: (res) => {
         console.log('Get user daily energy ' + res.statusCode);
@@ -55,7 +57,7 @@ Page({
         } else {
           console.log(res.data);
           if(typeof res.data === 'string') {
-            const resJson= JSON.parse(res.data)
+            const resJson = JSON.parse(res.data)
             this.setData({
               goal: resJson.target_energy.calories,
               carbGoal: resJson.target_energy.carbs,
@@ -80,6 +82,30 @@ Page({
         }
       }
     });
+
+
+    console.log('Current date is ', currentDate);
+    console.log('Auth ', app.globalData.auth);
+    wx.request({
+      url: `${endpoint}/food/food_records/?record_date=${currentDate}`,
+      method: 'GET', // The HTTP method
+      header: {
+        'accept': 'application/json', // The Accept header
+        'Authorization': `Bearer ${accessToken}` // The Authorization header
+      },
+      success: (res) => {
+        console.log(res.data)
+        if (Array.isArray(res.data)) {
+          this.setData({
+            'meals': res.data,
+          })
+        }
+        
+      },
+      fail: (err) => {
+        console.error(err.errMsg)
+      }
+    })
   },
 
   rpxToPx(rpx: number) {
@@ -173,5 +199,19 @@ Page({
           ctx.fillText(item.label, startX + barWidth + 10, yPosition + barHeight - 5);
         });
       });
+    },
+
+    getCurrentDateFormatted(): string {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
+
+    validFoodRecords(): boolean {
+      return (
+        true
+      )
     }
 })
