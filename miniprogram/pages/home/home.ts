@@ -5,17 +5,6 @@ interface Item {
   value: number;
 }
 
-interface Meal {
-  calories: number,
-  carbs: number,
-  fat: number,
-  protein: number,
-  food_details: string,
-  id: number,
-  image_data: string,
-  meal_type: string
-}
-
 Page({
   data: {
     screenWidth: 0,
@@ -34,7 +23,6 @@ Page({
   },
   
   onShow() {
-    const app = getApp();
     const systemInfo = wx.getSystemInfoSync();
     const currentDate = this.getCurrentDateFormatted();
     const accessToken = wx.getStorageSync('openId');
@@ -52,12 +40,14 @@ Page({
       },
       success: (res) => {
         console.log('Get user daily energy ' + res.statusCode);
-        if (Object.keys(res.data).length === 0) {
-          console.error('Empty result')
-        } else {
-          console.log(res.data);
-          if(typeof res.data === 'string') {
-            const resJson = JSON.parse(res.data)
+        console.log(res.data);
+        if (res.data && typeof res.data === 'object' && 'data' in res.data) {
+          if (Object.keys(res.data.data).length === 0) {
+            console.error('Empty result');
+          } else {
+            console.log(res.data.data);
+            if (typeof res.data.data === 'string') {
+            const resJson = JSON.parse(res.data.data)
             this.setData({
               goal: resJson.target_energy.calories,
               carbGoal: resJson.target_energy.carbs,
@@ -85,7 +75,6 @@ Page({
 
 
     console.log('Current date is ', currentDate);
-    console.log('Auth ', app.globalData.auth);
     wx.request({
       url: `${endpoint}/food/food_records/?record_date=${currentDate}`,
       method: 'GET', // The HTTP method
@@ -94,10 +83,11 @@ Page({
         'Authorization': `Bearer ${accessToken}` // The Authorization header
       },
       success: (res) => {
-        console.log(res.data)
-        if (Array.isArray(res.data)) {
+        const result =res.data.data
+        console.log(result)
+        if (Array.isArray(result)) {
           this.setData({
-            'meals': res.data,
+            'meals': result,
           })
         }
         
@@ -134,7 +124,7 @@ Page({
         const centerX = res[0].width / 2;
         const centerY = res[0].height / 2;
         const startAngle = 0;
-        const endAngle = (percentage / 100) * 2 * Math.PI;
+        const endAngle = percentage > 100 ? 2 * Math.PI : (percentage / 100) * 2 * Math.PI;
 
         // Draw background circle
         ctx.beginPath();
@@ -149,6 +139,9 @@ Page({
         ctx.lineWidth = 12;
         ctx.strokeStyle = '#1AAD19';
         ctx.stroke();
+
+        // Draw surplus arc
+
 
         // Draw the percentage text
         ctx.font = '18px Arial';

@@ -1,3 +1,5 @@
+import { updateUserInfo } from "../../services/api";
+
 Page({
 
   data: {
@@ -6,7 +8,7 @@ Page({
     accessToken: wx.getStorageSync('openId'),
   },
 
-  formSubmit(e:any) {
+  async formSubmit(e:any) {
     const formData = e.detail.value;
     console.log('Form data:', formData);
 
@@ -42,15 +44,8 @@ Page({
       return;
     }
 
-    wx.request({
-      url: 'http://39.105.187.228/user/update_info', // The URL from the curl command
-      method: 'POST', // The HTTP method
-      header: {
-        'accept': 'application/json', // The Accept header
-        'Authorization': `Bearer ${this.data.accessToken}`, // The Authorization header
-        'Content-Type': 'application/json' // The Content-Type header
-      },
-      data: {
+    try {
+      await updateUserInfo({
         user_name: this.data.nickName,
         gender: formData.gender,
         birthday: this.getFormattedBirthday(formData.age),
@@ -58,18 +53,15 @@ Page({
         weight: formData.age,
         target: formData.goal,
         exercise_frequency: formData.habit
-      },
-      success: (res) => {
-        console.log('User Info Updated:', res.data);
-        // Handle the response data as needed
-        wx.switchTab({
-          url: '/pages/home/home'
-        })
-      },
-      fail: (err) => {
-        console.error('Request failed:', err);
-      }
-    });
+      });
+
+      wx.switchTab({
+        url: '/pages/analysis/analysis'
+      });
+    } catch (error) {
+      console.error('Update user info error:', error);
+      wx.showToast({ title: '更新用户信息失败', icon: 'none' });
+    }
   },
 
   getFormattedBirthday(age: number) {

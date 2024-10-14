@@ -25,6 +25,7 @@
   font-size: 40rpx;
   justify-content: flex-start;
   align-items: left;
+  font-family: cursive;
 }
 
 .remaining-text {

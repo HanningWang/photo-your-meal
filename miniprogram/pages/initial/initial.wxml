@@ -1,0 +1,8 @@
+<view class="container">
+  <image class="logo" src="{{logo}}" mode="aspectFit"></image>
+  <button wx:if="{{showPrivacyButton}}"
+    open-type="agreePrivacyAuthorization"
+    bindagreeprivacyauthorization="handlePrivacyAuthorize">
+    Agree to Privacy Policy
+  </button>
+</view>

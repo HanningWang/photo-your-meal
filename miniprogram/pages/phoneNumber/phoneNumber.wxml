@@ -1,0 +1,5 @@
+<view class="container">
+  <button class="btn btn-primary" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">授权获取手机号</button>
+  <button class="btn btn-secondary" bindtap="skipPhoneNumber">暂不授权手机号</button>
+  <view class="explanation">手机号仅用于关联随食拍其他平台账号</view>
+</view>

@@ -1,6 +1,10 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/initial/initial",
+    "pages/profile/profile",
+    "pages/phoneNumber/phoneNumber",
+    "pages/analysis/analysis",
+    "pages/landing/landing",
     "pages/questionnaire/questionnaire",
     "pages/home/home",
     "pages/upload/upload",
@@ -15,7 +19,7 @@
   },
   "tabBar": {
     "list": [{
-      "pagePath": "pages/home/home",
+      "pagePath": "pages/analysis/analysis",
       "iconPath": "images/edit.png",
       "text": "记录"
     },
@@ -32,5 +36,12 @@
   },
   "style": "v2",
   "componentFramework": "glass-easel",
-  "lazyCodeLoading": "requiredComponents"
+  "lazyCodeLoading": "requiredComponents",
+  "useExtendedLib": {
+    "weui": true
+  },
+  "usingComponents": {
+    "mp-cell": "weui-miniprogram/cell/cell",
+    "mp-cells": "weui-miniprogram/cells/cells"
+  }
 }

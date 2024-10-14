@@ -1,1 +1,27 @@
-my profile
+<!-- pages/user/user.wxml -->
+<view class="user-profile">
+
+<!-- User Info Section -->
+<navigator url="/pages/login/login" class="user-info">
+  <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+  <text class="username">{{userInfo.nickname}}</text>
+</navigator>
+
+<!-- Clickable Cells -->
+<mp-cells>
+
+  <mp-cell link url="/pages/info/info">
+    <view slot="title">我的信息</view>
+  </mp-cell>
+
+  <mp-cell link url="/pages/records/records">
+    <view slot="title">我的记录</view>
+  </mp-cell>
+
+  <mp-cell link url="/pages/contact/contact">
+    <view slot="title">联系我们</view>
+  </mp-cell>
+
+</mp-cells>
+
+</view>

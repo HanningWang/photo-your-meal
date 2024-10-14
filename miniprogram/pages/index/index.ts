@@ -3,7 +3,6 @@
 import { endpoint } from "../../constants/global"
 
 // 获取应用实例
-const app = getApp<IAppOption>()
 const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 
 Page({
@@ -12,59 +11,29 @@ Page({
       avatarUrl: defaultAvatarUrl,
       nickName: '',
     },
-    hasUserInfo: false,
+    hasUserInfo: true,
+    hasUserStats: true,
+    hasUserPhoneNumber: true,
     canIUseGetUserProfile: wx.canIUse('getUserProfile'),
     canIUseNicknameComp: wx.canIUse('input.type.nickname'),
     accessToken: '',
   },
 
-    // 事件处理函数
-    bindViewTap() {
-      wx.navigateTo({
-        url: '../logs/logs',
-      })
-    },
-    onChooseAvatar(e: any) {
-      const { avatarUrl } = e.detail
-      const { nickName } = this.data.userInfo
-      this.setData({
-        "userInfo.avatarUrl": avatarUrl,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
+  onLoad() {
+    this.getUserOpenId();
+  },
 
-      wx.setStorageSync('avatarUrl', avatarUrl);
-    },
-    onInputChange(e: any) {
-      const nickName = e.detail.value
-      const { avatarUrl } = this.data.userInfo
-      this.setData({
-        "userInfo.nickName": nickName,
-        hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-      })
-
-      this.getUserOpenId();
-
-      wx.setStorageSync('nickName', nickName);
-      wx.navigateTo({
-        url: '/pages/questionnaire/questionnaire'
-      });
-    },
     getUserProfile() {
       // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
       console.log('Loading...')
       wx.getUserProfile({
         desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-        
         success: (res) => {
           console.log(res)
           this.setData({
             userInfo: res.userInfo,
             hasUserInfo: true
           })
-
-          this.getUserOpenId();
-
-          console.log('Access token is ' + this.data.accessToken);
         }
       })
     },
@@ -83,18 +52,20 @@ Page({
                 'accept': 'application/json', // The Accept header
               },
               success: (response) => {
-                console.log(response.data.access_token)
-                if(typeof response.data === 'object' && 'access_token' in response.data) {
-                  
-                  console.log('Get access token ' + response.data.access_token)
-                  wx.setStorageSync('openId', response.data.access_token);
-                  const accessToken =  `Bearer ${response.data.access_token}`;
-                  this.getUserInfo(accessToken);
+                console.log(response.data);
+                const accessToken =  response.data.data.access_token;
+                wx.setStorageSync('openId', accessToken);
+                if (response.data.code === 100) {
+                  this.setData({
+                    hasUserPhoneNumber: false,
+                  });
                 } else {
-                  console.error('Failed to get openId from response: ', response.data);
+                  this.setData({
+                    hasUserPhoneNumber: true,
+                  });
                 }
 
-                console.log('open id ', wx.getStorageSync('openId'));
+                this.getUserInfo(accessToken);
               },
               fail: (err) => {
                 console.error('Failed to get openId:', err);
@@ -113,22 +84,49 @@ Page({
         method: 'GET', // The HTTP method
         header: {
           'accept': 'application/json', // The Accept header
-          'Authorization': accessToken // The Authorization header
+          'Authorization': `Bearer ${accessToken}`// The Authorization header
         },
-        success(res) {
-          console.log('Get user info ' + res.statusCode);
-          console.log(res.data);
-          if (Object.keys(res.data).length === 0) {
+        success: (res) => {
+          const resData = res.data.data;
+          console.log('user info: ' + resData);
+          this.setData({
+            hasUserInfo: resData.user_nickname !== null || resData.wechat_avatar_url !== null
+          });
+          this.setData({
+            hasUserStats: resData.height !== null
+          });
+          // If no user profile, request user profile
+          if (resData.user_nickname === null && resData.wechat_avatar_url === null) {
             wx.navigateTo({
               url: '/pages/questionnaire/questionnaire'
             });
           } else {
-            wx.setStorageSync('userBasicInfo', res.data);
+            wx.setStorageSync('userBasicInfo', res.data.data);
             wx.switchTab({
               url: '/pages/home/home'
             })
           }
         }
       });
+    },
+
+    getUserPhoneNumber(e: any) {
+      console.log(e);
+      if (e.detail.errMsg === "getPhoneNumber:fail no permission") {
+        wx.showModal({
+          title: '没有权限',
+          content: '您需要提供权限获取手机号码',
+          showCancel: false,
+          confirmText: '我知道了',
+          success(res) {
+            if (res.confirm) {
+              console.log('User agreed to try again');
+              // Optionally, prompt user to retry
+            } else if (res.cancel) {
+              console.log('User declined to provide phone number');
+            }
+          }
+        });
+      }
     }
 })

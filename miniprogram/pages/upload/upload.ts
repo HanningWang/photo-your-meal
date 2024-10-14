@@ -55,9 +55,9 @@ Page({
         'Content-Type': 'multipart/form-data'
       },
       success: (res) => {
-        console.log('Upload successful:', res.statusCode, res.data);
+        console.log('Upload successful:', res.statusCode, res.data.data);
         // Handle the response data as needed
-        wx.setStorageSync('mealSummary', res.data);
+        wx.setStorageSync('mealSummary', res.data.data);
 
         this.clearLocalData();
       },

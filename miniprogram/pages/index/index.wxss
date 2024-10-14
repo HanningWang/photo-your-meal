@@ -62,3 +62,14 @@ page {
 .nickname-input {
   flex: 1;
 }
+
+.skipPhoneNumberButton {
+  margin-top: 50rpx;
+}
+
+.term_of_use {
+  margin-top: 60rpx;
+  font-size: 20rpx;
+  color: blue;
+  align-self: center;
+}
