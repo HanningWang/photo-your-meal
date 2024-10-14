@@ -12,7 +12,7 @@ Page({
     meals: [],
   },
 
-  onLoad() {
+  onShow() {
     this.getDailyEnergy();
     this.getFoodRecords();
     this.drawCalorieCircle()

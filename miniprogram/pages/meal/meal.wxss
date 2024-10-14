@@ -33,6 +33,8 @@
   padding: 16rpx;
   text-align: center;
   font-weight: bold;
+  background-color: #2563eb;
+  color: #ffffff;
 }
 
 .card-title {

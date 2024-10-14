@@ -1,0 +1,92 @@
+.container {
+  max-width: 600rpx;
+  margin: 0 auto;
+  padding: 24rpx;
+}
+
+.image-container {
+  position: relative;
+  min-height: 400rpx;
+  width: 100%;
+  border-radius: 16rpx;
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 400rpx;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 400rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4rpx dashed #d1d5db;
+  background-color: #f3f4f6;
+}
+
+.placeholder-text {
+  color: #9ca3af;
+}
+
+.image-instructions {
+  margin-top: 16rpx;
+  text-align: center;
+}
+
+.instruction-text {
+  font-size: 24rpx;
+  color: #4b5563;
+  display: block;
+}
+
+.red-star {
+  color: #ef4444;
+  margin-right: 4rpx;
+}
+
+.replace-button {
+  margin-top: 16rpx;
+  width: 100%;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2rpx solid #d1d5db;
+}
+
+.meal-type-container {
+  margin-top: 32rpx;
+}
+
+.meal-type-label {
+  display: block;
+  margin-bottom: 16rpx;
+  font-weight: bold;
+}
+
+.meal-type-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.meal-type-option {
+  width: 48%;
+  margin-bottom: 16rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.meal-type-option radio {
+  transform: scale(0.8);
+  margin-right: 8rpx;
+}
+
+.confirm-button {
+  margin-top: 32rpx;
+  width: 100%;
+  background-color: #2563eb;
+  color: #ffffff;
+}

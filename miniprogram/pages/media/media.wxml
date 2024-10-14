@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="image-container">
+    <block wx:if="{{imageSrc}}">
+      <image src="{{imageSrc}}" mode="aspectFit" class="uploaded-image" bindtap="handleReplaceImage"></image>
+    </block>
+    <block wx:else>
+      <view class="image-placeholder" bindtap="handlePlaceholderClick">
+        <text class="placeholder-text">点击上传图片</text>
+      </view>
+    </block>
+  </view>
+
+  <view class="image-instructions">
+      <text class="instruction-text"><text class="red-star">*</text>上传用餐图片，获得营养数据</text>
+      <text class="instruction-text">视角越清晰，光线越充足，数据越准确</text>
+    </view>
+
+  <view class="meal-type-container">
+    <text class="meal-type-label">选择用餐类型</text>
+    <radio-group class="meal-type-group" bindchange="handleMealTypeChange">
+      <label class="meal-type-option" wx:for="{{mealTypes}}" wx:key="*this">
+        <radio value="{{item}}" checked="{{item === mealType}}"/>{{item}}
+      </label>
+    </radio-group>
+  </view>
+
+  <button class="confirm-button" bindtap="handleConfirm">确认</button>
+</view>
