@@ -1,3 +1,5 @@
+import { uploadFoodImage } from "../../services/api";
+
 Page({
   data: {
     imageSrc: '',
@@ -26,54 +28,40 @@ Page({
     const formData = e.detail.value;
     console.log(formData)
     this.uploadFoodImage(formData);
+  },
 
+  async uploadFoodImage(formData: any) {
+    const imageSrc = this.data.imageSrc;
+    const mealType = formData.meal_type;
     wx.setStorageSync('mealType', formData.meal_type);
-    wx.setStorageSync('imgSrc', this.data.imageSrc);
     this.setData({
       'mealType': formData.meal_type,
       'imageSrc': this.data.imageSrc,
     })
+    console.log('Meal type is ' + encodeURIComponent(mealType));
 
-    wx.navigateTo({
-      url: '/pages/summary/summary'
-    });
+    try {
+      const res = await uploadFoodImage(mealType, imageSrc);
+      const resData = JSON.parse(res).data;
+      console.log('Upload successful:',  res);
+      // Handle the response data as needed
+      wx.setStorageSync('mealSummary', resData);
+
+      this.clearLocalData();
+      wx.navigateTo({
+        url: '/pages/summary/summary'
+      });
+    } catch (error) {
+      wx.showToast({
+        title: '上传失败，请重新上传图片',
+        icon: 'none'
+      });
+      this.clearLocalData();
+      wx.switchTab({
+        url: '/pages/analysis/analysis'
+      });
+    }
   },
-
-  uploadFoodImage(formData: any) {
-    const imageSrc = this.data.imageSrc;
-    const mealType = formData.meal_type;
-    console.log('Meal type is ' + mealType)
-    console.log('Encoded meal type is ' + encodeURIComponent(mealType))
-
-    wx.uploadFile({
-      url: `http://39.105.187.228/food/upload_food_image/?meal_type=${encodeURIComponent(mealType)}`, // The URL from the curl command
-      filePath: imageSrc, // Path of the file to be uploaded
-      name: 'file', // Name of the form data field
-      header: {
-        'accept': 'application/json',
-        'Authorization': `Bearer ${this.data.accessToken}`,
-        'Content-Type': 'multipart/form-data'
-      },
-      success: (res) => {
-        console.log('Upload successful:', res.statusCode, res.data.data);
-        // Handle the response data as needed
-        wx.setStorageSync('mealSummary', res.data.data);
-
-        this.clearLocalData();
-      },
-      fail: (err) => {
-        console.error('Upload failed:', err);
-        wx.showToast({
-          title: '上传失败，请重新上传图片',
-          icon: 'none'
-        })
-        wx.switchTab({
-          url: '/pages/home/home'
-        })
-      }
-    });
-  },
-
 
   clearLocalData() {
     this.setData({

@@ -1,0 +1,87 @@
+<view class="container">
+  <!-- 餐食照片 -->
+  <view class="food-image">
+    <image src="{{mealSummary.image_url}}" mode="aspectFill" />
+  </view>
+
+  <!-- 营养摘要卡片 -->
+  <view class="card">
+    <view class="card-content">
+      <text class="card-title">营养摘要</text>
+      <view class="nutrition-summary">
+        <view class="nutrition-item">
+          <image class="icon" src="../../images/fire.svg" />
+          <text class="value">520</text>
+          <text class="label">卡路里</text>
+        </view>
+        <view class="nutrition-item">
+          <image class="icon" src="../../images/rice.svg" />
+          <text class="value">65克</text>
+          <text class="label">碳水化合物</text>
+        </view>
+        <view class="nutrition-item">
+          <image class="icon" src="../../images/meat.svg" />
+          <text class="value">20克</text>
+          <text class="label">蛋白质</text>
+        </view>
+        <view class="nutrition-item">
+          <image class="icon" src="../../images/avocado.svg" />
+          <text class="value">25克</text>
+          <text class="label">脂肪</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜品卡片 -->
+  <view class="card" wx:for="{{dishes}}" wx:key="index">
+    <view class="card-content">
+      <text class="dish-title">{{item.dish_name}}</text>
+      <view class="dish-info">
+        <view class="dish-info-row">
+          <view class="dish-info-item">
+            <image class="icon-small" src="../../images/fire.svg" />
+            <text>卡路里: {{item.calories}}</text>
+          </view>
+          <view class="dish-info-item">
+            <image class="icon-small" src="../../images/weight.svg" />
+            <text>重量: {{item.weight}}</text>
+          </view>
+        </view>
+        <view class="dish-info-row">
+          <view class="dish-info-item">
+            <image class="icon-small" src="../../images/rice.svg" />
+            <text>碳水: {{item.carbs}}</text>
+          </view>
+          <view class="dish-info-item">
+            <image class="icon-small" src="../../images/meat.svg" />
+            <text>蛋白质: {{item.protein}}</text>
+          </view>
+          <view class="dish-info-item">
+            <image class="icon-small" src="../../images/avocado.svg" />
+            <text>脂肪: {{item.fat}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="dish-details">
+        <view class="dish-details-item">
+          <image class="icon-small icon-salad" src="../../images/salad.svg" />
+          <text class="dish-details-label">配料：</text>
+          <text>{{item.ingredients}}</text>
+        </view>
+        <view class="dish-details-item">
+          <image class="icon-small icon-star" src="../../images/star.svg" />
+          <text class="dish-details-label">营养价值：</text>
+          <text>{{item.nutritional_value}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 返回主页按钮 -->
+  <view class="card">
+    <view class="card-content-narrow">
+      <text class='return-text' bindtap = "onReturnHome">返回主页</text>
+    </view>
+  </view>
+</view>

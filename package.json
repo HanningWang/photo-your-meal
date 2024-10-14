@@ -2,14 +2,18 @@
   "name": "miniprogram-ts-less-quickstart",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "",
   "dependencies": {
+    "uview-ui": "^2.0.36",
+    "weui": "^2.6.16",
+    "weui-miniprogram": "^1.4.2"
   },
   "devDependencies": {
-    "miniprogram-api-typings": "^2.8.3-1"
+    "miniprogram-api-typings": "^2.8.3-1",
+    "sass": "^1.79.2",
+    "sass-loader": "^10.5.2"
   }
 }

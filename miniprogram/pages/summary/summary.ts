@@ -2,16 +2,15 @@ Page({
   data: {
     mealType: wx.getStorageSync('mealType'),
     imgSrc: wx.getStorageSync('imgSrc'),
-    mealSummary: {},
+    mealSummary: wx.getStorageSync('mealSummary'),
     dishes: {}
   },
 
   onLoad() {
-      const mealSummaryString:string = wx.getStorageSync('mealSummary');
-      console.log('Meal summary ' + mealSummaryString);
-      const mealSummary = JSON.parse(mealSummaryString)
-      const dishesString:string = mealSummary.food_details
-      const dishes:JSON = JSON.parse(dishesString)
+      const mealSummary = wx.getStorageSync('mealSummary');
+      console.log('Meal summary ' + JSON.stringify(mealSummary));
+      console.log(typeof(mealSummary));
+      const dishes:JSON = mealSummary.food_details;
       this.setData({
         'mealSummary': mealSummary,
         'dishes': dishes
@@ -19,9 +18,9 @@ Page({
   },
 
   onSubmit() {
-    console.log('Go to home');
+    console.log('Back to the main page');
     wx.switchTab({
-      url: '/pages/home/home'
+      url: '/pages/analysis/analysis'
     })
   }
 })

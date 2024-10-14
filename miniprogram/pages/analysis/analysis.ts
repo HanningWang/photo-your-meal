@@ -1,36 +1,21 @@
-import { getDailyEnergy } from '../../services/api';
-import { getNutrients, getMeals } from '../../services/nutritionService'
+import { getDailyEnergy, getFoodRecords } from '../../services/api';
+import { getNutrients, getMeals as getMockMeals, getInitialNutrients } from '../../services/nutritionService'
+import { getCurrentDateFormatted } from '../../utils/common';
 
 Page({
   data: {
     baseGoal: 2080,
-    foodCalories: 2400,
+    foodCalories: 0,
     remainingCalories: 0,
     consumptionPercentage: 0,
-    nutrients: [],
+    nutrients: getInitialNutrients(),
     meals: [],
   },
 
   onLoad() {
-    const currentDate = this.getCurrentDateFormatted();
     this.getDailyEnergy();
-    this.calculateCalories()
-    this.setData({
-      nutrients: getNutrients(),
-      meals: getMeals(),
-    })
+    this.getFoodRecords();
     this.drawCalorieCircle()
-  },
-
-  calculateCalories() {
-    const { baseGoal, foodCalories } = this.data
-    const remainingCalories = baseGoal - foodCalories
-    const consumptionPercentage = (foodCalories / baseGoal) * 100
-
-    this.setData({
-      remainingCalories,
-      consumptionPercentage,
-    })
   },
 
   drawCalorieCircle() {
@@ -61,12 +46,14 @@ Page({
         const startAngle = -Math.PI / 2
         const endAngle = startAngle + (2 * Math.PI * Math.min(this.data.consumptionPercentage, 100) / 100)
 
-        ctx.beginPath()
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle)
-        ctx.strokeStyle = '#3b82f6'
-        ctx.lineWidth = 12
-        ctx.lineCap = 'round'
-        ctx.stroke()
+        if (this.data.consumptionPercentage > 0) {
+          ctx.beginPath()
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle)
+          ctx.strokeStyle = '#3b82f6'
+          ctx.lineWidth = 12
+          ctx.lineCap = 'round'
+          ctx.stroke()
+        }
 
         // Surplus arc (if applicable)
         if (this.data.consumptionPercentage > 100) {
@@ -91,21 +78,58 @@ Page({
       })
   },
 
-  getCurrentDateFormatted(): string {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  },
-
   async getDailyEnergy() {
-    const response = await getDailyEnergy();
-    const dailyEnergyResult = response.data;
-    console.log('Daily energy result ' + JSON.stringify(response));
+    try {
+      const response = await getDailyEnergy();
+      const res = JSON.parse(response.data);
+      console.log('Daily energy result ' + JSON.stringify(res));
+
+      const baseGoal = res.target_energy.calories;
+      const foodCalories = res.actual_energy.calories;
+      const remainingCalories = baseGoal - foodCalories;
+      const consumptionPercentage = (foodCalories / baseGoal) * 100;
+      
+      this.setData({
+        baseGoal: baseGoal,
+        foodCalories: foodCalories,
+        remainingCalories: remainingCalories,
+        consumptionPercentage: consumptionPercentage,
+        nutrients: getNutrients({
+          carbGoal: res.target_energy.carbs,
+          proteinGoal: res.target_energy.protein,
+          fatGoal: res.target_energy.fat,
+          foodCarb: res.actual_energy.carbs,
+          foodProtein: res.actual_energy.protein,
+          foodFat: res.actual_energy.fat,
+        }),
+      })
+    } catch (error) {
+      console.error('Get user daily energy info err:', error);
+      wx.showToast({ title: '获取用户营养信息失败', icon: 'none' });
+    }
+    
   },
 
-  getFoodRecords() {
+  async getFoodRecords() {
+    const currentDate = getCurrentDateFormatted();
+    try {
+      const response = await getFoodRecords(currentDate);
+      const res = response.data;
+      console.log('Food records ' + res);
 
+      this.setData({
+        meals: getMockMeals(),
+      })
+    } catch (error) {
+      console.error('Get user food records err:', error);
+      wx.showToast({ title: '获取用户饮食记录失败', icon: 'none' });
+    }
+  },
+
+  handleNavigation() {
+    // Navigate to the target page programmatically
+    wx.navigateTo({
+      url: '/pages/meal/meal',
+    });
   }
 })

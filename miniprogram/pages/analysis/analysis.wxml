@@ -51,7 +51,7 @@
     <view class="card-content">
       <view class="meal-header">
         <text class="meal-name">{{item.name}}</text>
-        <text class="meal-details">详细</text>
+        <text class="meal-details" bindtap="handleNavigation">详细</text>
       </view>
       <view class="meal-content">
         <image src="{{item.imageUrl}}" mode="aspectFill" class="meal-image"></image>

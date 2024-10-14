@@ -13,10 +13,10 @@
             <radio value="早餐"/> 早餐
           </label>
           <label>
-            <radio value="午餐"/> 午餐
+            <radio value="午饭"/> 午饭
           </label>
           <label>
-            <radio value="晚餐"/> 晚餐
+            <radio value="晚饭"/> 晚饭
           </label>
           <label>
             <radio value="零食"/> 零食

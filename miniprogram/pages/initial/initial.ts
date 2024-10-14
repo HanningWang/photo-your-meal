@@ -59,9 +59,12 @@ Page({
 
       if (!userInfo.wechat_nickname || !userInfo.wechat_avatar_url) {
         wx.navigateTo({ url: '/pages/profile/profile' });
-      } else if (loginResult.code === 100) {
-        wx.navigateTo({ url: '/pages/phoneNumber/phoneNumber' });
-      } else if (userInfo.height === null) {
+      } 
+      // Temporarily not verify phone number.
+      // else if (loginResult.code === 100) {
+      //   wx.navigateTo({ url: '/pages/phoneNumber/phoneNumber' });
+      // } 
+      else if (userInfo.height === null) {
         wx.navigateTo({ url: '/pages/questionnaire/questionnaire' });
       } else {
         wx.switchTab({ url: '/pages/analysis/analysis' });

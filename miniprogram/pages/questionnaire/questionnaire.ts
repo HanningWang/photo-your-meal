@@ -1,11 +1,11 @@
 import { updateUserInfo } from "../../services/api";
+import { getFormattedBirthday } from "../../utils/common";
 
 Page({
 
   data: {
     nickName: wx.getStorageSync('nickName'),
     avatarUrl: wx.getStorageSync('avatarUrl'),
-    accessToken: wx.getStorageSync('openId'),
   },
 
   async formSubmit(e:any) {
@@ -28,9 +28,9 @@ Page({
       return;
     }
 
-    if(formData.height < 1 || formData.height > 300) {
+    if(formData.height < 1 || formData.height > 240) {
       wx.showToast({
-        title: '身高应在1至300cm之间',
+        title: '身高应在1至240cm之间',
         icon: 'none'
       });
       return;
@@ -48,7 +48,7 @@ Page({
       await updateUserInfo({
         user_name: this.data.nickName,
         gender: formData.gender,
-        birthday: this.getFormattedBirthday(formData.age),
+        birthday: getFormattedBirthday(formData.age),
         height: formData.height,
         weight: formData.age,
         target: formData.goal,
@@ -63,16 +63,4 @@ Page({
       wx.showToast({ title: '更新用户信息失败', icon: 'none' });
     }
   },
-
-  getFormattedBirthday(age: number) {
-    const currentDate = new Date();
-
-    const year = String(currentDate.getFullYear() - age);
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // getMonth() returns 0-11, so we add 1
-    const day = String(currentDate.getDate()).padStart(2, '0');
-
-    // Format as yyyy-mm-dd
-    console.log(`Formatted birthday is ${year}-${month}-${day}`)
-    return `${year}-${month}-${day}`;
-  }
 });

@@ -1,8 +1,16 @@
-export function getNutrients() {
+export function getInitialNutrients() {
   return [
-    { name: "碳水化合物", current: 150, goal: 250, icon_url: '../../images/rice.svg' },
-    { name: "蛋白质", current: 100, goal: 150, icon_url: '../../images/meat.svg' },
-    { name: "脂肪", current: 50, goal: 70, icon_url: '../../images/avocado.svg' },
+    { name: "碳水化合物", current: 0, goal: 200, icon_url: '../../images/rice.svg' },
+    { name: "蛋白质", current: 0, goal: 100, icon_url: '../../images/meat.svg' },
+    { name: "脂肪", current: 0, goal: 50, icon_url: '../../images/avocado.svg' },
+  ];
+}
+
+export function getNutrients(data: any) {
+  return [
+    { name: "碳水化合物", current: data.foodCarb, goal: data.carbGoal, icon_url: '../../images/rice.svg' },
+    { name: "蛋白质", current: data.foodProtein, goal: data.proteinGoal, icon_url: '../../images/meat.svg' },
+    { name: "脂肪", current: data.foodFat, goal: data.fatGoal, icon_url: '../../images/avocado.svg' },
   ];
 }
 

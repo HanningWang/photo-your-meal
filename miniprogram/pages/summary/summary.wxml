@@ -5,8 +5,8 @@
   <image class="meal_img" src="{{imgSrc}}"></image>
 
   <view class="mealSummary">
-    <text class="summary_nutrition">卡路里：{{mealSummary.calories}}g</text>
-    <text class="summary_nutrition">碳水化合物：{{mealSummary.calories}}g</text>
+    <text class="summary_nutrition">卡路里：{{mealSummary.calories}}kcal</text>
+    <text class="summary_nutrition">碳水化合物：{{mealSummary.carbs}}g</text>
     <text class="summary_nutrition">蛋白质：{{mealSummary.protein}}g</text>
     <text class="summary_nutrition">脂肪：{{mealSummary.fat}}g</text>
     <view wx:for="{{dishes.dishes}}" wx:key="index" wx:for-item="dish" class="meal_item">

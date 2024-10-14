@@ -1,7 +1,7 @@
-import { request } from '../utils/request';
+import { mediaRequest, request } from '../utils/request';
 
 export async function login(data: { platform: string; code: string }) {
-  return request(`/user/login?platform=app&code=${data.code}`, 'POST');
+  return request(`/user/login?platform=${data.platform}&code=${data.code}`, 'POST');
 }
 
 export async function getUserInfo() {
@@ -26,4 +26,8 @@ export async function getDailyEnergy() {
 
 export async function getFoodRecords(formattedDate: string) {
   return request(`/food/food_records?record_date=${formattedDate}`, 'GET');
+}
+
+export async function uploadFoodImage(mealType: string, imageSrc: string) {
+  return mediaRequest(`/food/upload_food_image/?meal_type=${encodeURIComponent(mealType)}`, imageSrc)
 }
