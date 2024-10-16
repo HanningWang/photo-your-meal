@@ -47,11 +47,12 @@
     </view>
   </view>
 
-  <view wx:for="{{meals}}" wx:key="name" class="card">
+  <block wx:if="{{meals.length > 0}}">
+    <view wx:for="{{meals}}" wx:key="name" class="card">
     <view class="card-content">
       <view class="meal-header">
         <text class="meal-name">{{item.name}}</text>
-        <text class="meal-details" bindtap="handleNavigation">详细</text>
+        <text class="meal-details" data-item="{{item}}" bindtap="handleNavigation">详细</text>
       </view>
       <view class="meal-content">
         <image src="{{item.imageUrl}}" mode="aspectFill" class="meal-image"></image>
@@ -82,4 +83,14 @@
       </view>
     </view>
   </view>
+  </block>
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-content empty-meal-content">
+        <text class="empty-message">今日暂无饮食记录</text>
+        <text class="add-link" bindtap="handleAddMeal">去添加</text>
+      </view>
+    </view>
+  </block>
 </view>

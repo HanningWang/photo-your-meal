@@ -3,11 +3,19 @@ import { uploadFoodImage } from "../../services/api";
 Page({
   data: {
     imageSrc: '',
-    mealType: '',
-    accessToken: wx.getStorageSync('openId')
+    mealType: '早餐',
+    mealTypes: ['早餐', '午饭', '晚饭', '零食'],
   },
 
-  chooseMedia() {
+  handlePlaceholderClick() {
+    this.chooseImage();
+  },
+
+  handleReplaceImage() {
+    this.chooseImage();
+  },
+
+  chooseImage() {
     wx.chooseMedia({
       count: 1, // Allow only one image to be selected
       mediaType: ['image'], // Only allow images
@@ -24,32 +32,33 @@ Page({
     });
   },
 
-  formSubmit(e:any) {
-    const formData = e.detail.value;
-    console.log(formData)
-    this.uploadFoodImage(formData);
+  handleMealTypeChange(e: WechatMiniprogram.RadioGroupChange) {
+    this.setData({
+      mealType: e.detail.value
+    });
   },
 
-  async uploadFoodImage(formData: any) {
+  async handleConfirm() {
+    console.log('Meal type:', this.data.mealType);
+    console.log('Image:', this.data.imageSrc);
+    // Handle the confirmation logic here
     const imageSrc = this.data.imageSrc;
-    const mealType = formData.meal_type;
-    wx.setStorageSync('mealType', formData.meal_type);
+    const mealType = this.data.mealType;
     this.setData({
-      'mealType': formData.meal_type,
-      'imageSrc': this.data.imageSrc,
-    })
-    console.log('Meal type is ' + encodeURIComponent(mealType));
-
+      'mealType': mealType,
+      'imageSrc': imageSrc,
+    });
     try {
       const res = await uploadFoodImage(mealType, imageSrc);
       const resData = JSON.parse(res).data;
       console.log('Upload successful:',  res);
+      console.log(resData);
       // Handle the response data as needed
       wx.setStorageSync('mealSummary', resData);
 
       this.clearLocalData();
       wx.navigateTo({
-        url: '/pages/summary/summary'
+        url: '/pages/meal/meal'
       });
     } catch (error) {
       wx.showToast({

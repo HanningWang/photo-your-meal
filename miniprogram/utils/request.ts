@@ -1,11 +1,10 @@
 import { getToken } from './auth';
 
-const BASE_URL = 'http://39.105.187.228';
+const BASE_URL = 'https://www.zhilukeji.tech';
 
 export async function request(url: string, method: 'GET' | 'POST', data?: any) {
   const token = getToken();
   console.log(`URL is ${BASE_URL}${url}`);
-  console.log(`data is ${JSON.stringify(data)}`);
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${BASE_URL}${url}`,

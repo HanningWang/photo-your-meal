@@ -206,3 +206,37 @@
   color: #6b7280;
   margin-left: 15rpx;
 }
+
+/* Style for the message */
+.empty-message {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Style for the clickable '去添加' link */
+.add-link {
+  font-size: 16px;
+  color: #1cbbb4; /* Custom color for the link */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.empty-meal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.empty-message {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.add-link {
+  font-size: 16px;
+  color: #007AFF;
+  text-decoration: underline;
+}

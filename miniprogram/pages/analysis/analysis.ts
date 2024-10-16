@@ -81,7 +81,7 @@ Page({
   async getDailyEnergy() {
     try {
       const response = await getDailyEnergy();
-      const res = JSON.parse(response.data);
+      const res = response.data;
       console.log('Daily energy result ' + JSON.stringify(res));
 
       const baseGoal = res.target_energy.calories;
@@ -114,9 +114,14 @@ Page({
     const currentDate = getCurrentDateFormatted();
     try {
       const response = await getFoodRecords(currentDate);
-      const res = response.data;
-      console.log('Food records ' + res);
 
+      if(Object.keys(response).length === 0) {
+        console.log('Response is empty');
+        return ;
+      } else {
+        const res = response.data;
+        console.log('Food records ' + JSON.stringify(response));
+      }
       this.setData({
         meals: getMockMeals(),
       })
@@ -126,10 +131,19 @@ Page({
     }
   },
 
-  handleNavigation() {
-    // Navigate to the target page programmatically
+  handleNavigation(e: WechatMiniprogram.BaseEvent) {
+    const mealItem = e.currentTarget.dataset.item;
+    console.log('Selected meal:', mealItem);
+
     wx.navigateTo({
-      url: '/pages/meal/meal',
+      url: 'pages/meal/meal',
+    })
+  },
+
+  handleAddMeal() {
+    // Navigate to the target page programmatically
+    wx.switchTab({
+      url: '/pages/upload/upload',
     });
   }
 })

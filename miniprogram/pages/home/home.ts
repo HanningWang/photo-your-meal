@@ -71,11 +71,11 @@ Page({
           }
         }
       }
-    });
+    }
+  });
 
-
-    console.log('Current date is ', currentDate);
-    wx.request({
+  console.log('Current date is ', currentDate);
+  wx.request({
       url: `${endpoint}/food/food_records/?record_date=${currentDate}`,
       method: 'GET', // The HTTP method
       header: {

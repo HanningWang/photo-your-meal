@@ -34,22 +34,8 @@ Page({
       
       const { code } = await wx.login();
       console.log('code ' + code);
-      // const appId = 'wxd2ec499da131067e';
-      // const secret = 'a11f72b6e773c700adf952f873320fe5';
-      // const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${secret}&js_code=${code}&grant_type=authorization_code`;
 
-    // wx.request({
-    //   url: url,
-    //   method: 'GET',
-    //   success: (response) => {
-    //     console.log(response.data);
-    //   },
-    //   fail :(err) => {
-    //     console.log(err);
-    //   }
-    // });
-
-      const loginResult = await login({ platform: 'wechat', code: code });
+      const loginResult = await login({ platform: 'app', code: code });
       console.log('login result ' + loginResult.data.access_token)
       setToken(loginResult.data.access_token);
 

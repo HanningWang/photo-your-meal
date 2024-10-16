@@ -1,35 +1,28 @@
 <view class="container">
-  <!-- Display Selected Image -->
-
-  <view wx:if="{{imageSrc}}" class='upload-instruction'>
-    <image src="{{imageSrc}}" class="uploaded-image"></image>
-    <button bindtap="chooseMedia" class="substitute-btn">替换图片</button>
-
-    <form bindsubmit="formSubmit">
-      <view class='form-group'>
-        <label>饮食种类</label>
-        <radio-group name="meal_type">
-          <label>
-            <radio value="早餐"/> 早餐
-          </label>
-          <label>
-            <radio value="午饭"/> 午饭
-          </label>
-          <label>
-            <radio value="晚饭"/> 晚饭
-          </label>
-          <label>
-            <radio value="零食"/> 零食
-          </label>
-        </radio-group>
+  <view class="image-container">
+    <block wx:if="{{imageSrc}}">
+      <image src="{{imageSrc}}" mode="aspectFit" class="uploaded-image" bindtap="handleReplaceImage"></image>
+    </block>
+    <block wx:else>
+      <view class="image-placeholder" bindtap="handlePlaceholderClick">
+        <text class="placeholder-text">点击上传图片</text>
       </view>
-      <button formType="submit" class='on-submit'>确定提交</button>
-    </form>
+    </block>
   </view>
-  <view wx:else class='upload-instruction'>
-    <text>上传用餐图片，获得营养数据。</text>
-    <text>视角越清晰，光线越充足，数据越准确。</text>
-    <button bindtap="chooseMedia" class="upload-btn">选择图片</button>
+
+  <view class="image-instructions">
+      <text class="instruction-text"><text class="red-star">*</text>上传用餐图片，获得营养数据</text>
+      <text class="instruction-text">视角越清晰，光线越充足，数据越准确</text>
+    </view>
+
+  <view class="meal-type-container">
+    <text class="meal-type-label">选择用餐类型</text>
+    <radio-group class="meal-type-group" bindchange="handleMealTypeChange">
+      <label class="meal-type-option" wx:for="{{mealTypes}}" wx:key="*this">
+        <radio value="{{item}}" checked="{{item === mealType}}"/>{{item}}
+      </label>
+    </radio-group>
   </view>
-  
+
+  <button class="confirm-button" bindtap="handleConfirm">确认</button>
 </view>

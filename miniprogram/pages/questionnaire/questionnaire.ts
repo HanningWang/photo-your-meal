@@ -1,28 +1,29 @@
 import { updateUserInfo } from "../../services/api";
-import { getFormattedBirthday } from "../../utils/common";
 
 Page({
-
   data: {
-    nickName: wx.getStorageSync('nickName'),
+    nickname: wx.getStorageSync('nickname'),
     avatarUrl: wx.getStorageSync('avatarUrl'),
+    exerciseHabit: '',
+    currentDate: '',
+    birthday: '',
+    gender: '',
+    goal: '',
   },
 
-  async formSubmit(e:any) {
+  onLoad() {
+    const now = new Date();
+    const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    this.setData({ currentDate });
+  },
+
+  async formSubmit(e: any) {
     const formData = e.detail.value;
     console.log('Form data:', formData);
 
-    if (!formData.gender || !formData.age || !formData.height || !formData.weight || !formData.goal || !formData.habit) {
+    if (!formData.gender || !formData.birthday || !formData.height || !formData.weight || !formData.goal || !formData.habit) {
       wx.showToast({
         title: '请填写所有问题',
-        icon: 'none'
-      });
-      return;
-    }
-    
-    if(formData.age < 1 || formData.age > 120) {
-      wx.showToast({
-        title: '年龄应在1至120岁之间',
         icon: 'none'
       });
       return;
@@ -46,11 +47,11 @@ Page({
 
     try {
       await updateUserInfo({
-        user_name: this.data.nickName,
+        user_name: this.data.nickname,
         gender: formData.gender,
-        birthday: getFormattedBirthday(formData.age),
+        birthday: formData.birthday,
         height: formData.height,
-        weight: formData.age,
+        weight: formData.weight,
         target: formData.goal,
         exercise_frequency: formData.habit
       });
@@ -62,5 +63,11 @@ Page({
       console.error('Update user info error:', error);
       wx.showToast({ title: '更新用户信息失败', icon: 'none' });
     }
+  },
+
+  onBirthdayChange(e: any) {
+    this.setData({
+      birthday: e.detail.value
+    });
   },
 });

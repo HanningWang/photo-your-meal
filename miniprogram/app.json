@@ -8,7 +8,6 @@
     "pages/questionnaire/questionnaire",
     "pages/home/home",
     "pages/upload/upload",
-    "pages/media/media",
     "pages/user/user",
     "pages/summary/summary",
     "pages/logs/logs"
@@ -25,7 +24,7 @@
       "text": "记录"
     },
     {
-      "pagePath": "pages/media/media",
+      "pagePath": "pages/upload/upload",
       "iconPath": "images/more.png",
       "text": ""
     },

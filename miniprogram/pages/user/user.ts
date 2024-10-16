@@ -1,4 +1,7 @@
 
 Page({
-  data: {},
+  data: {
+    avatarUrl: wx.getStorageSync(''),
+    nickname: wx.getStorageSync
+  },
 })
