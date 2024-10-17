@@ -3,8 +3,8 @@ import { setToken } from '../../utils/auth';
 
 Page({
   data: {
-    showPrivacyButton: true,
-    logo: '../../images/user.png', // Update this with your actual logo path
+    showPrivacyButton: false,
+    logo: '../../images/logo-color.svg',
   },
 
   onLoad() {
@@ -53,7 +53,7 @@ Page({
       else if (userInfo.height === null) {
         wx.navigateTo({ url: '/pages/questionnaire/questionnaire' });
       } else {
-        wx.switchTab({ url: '/pages/analysis/analysis' });
+        wx.switchTab({ url: '/pages/home/home' });
       }
     } catch (error) {
       console.error('Login error:', error);

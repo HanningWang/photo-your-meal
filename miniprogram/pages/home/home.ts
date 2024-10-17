@@ -1,210 +1,145 @@
-import { endpoint } from "../../constants/global";
-
-interface Item {
-  label: string;
-  value: number;
-}
+import { getDailyEnergy, getFoodRecords } from '../../services/api';
+import { getNutrients, getInitialNutrients } from '../../services/nutritionService'
+import { getCurrentDateFormatted } from '../../utils/common';
 
 Page({
   data: {
-    screenWidth: 0,
-
-    goal: 2000,
-    meal_num: 0,
-    intake: 0,
-    carbIntake: 0,
-    carbGoal: 200,
-    proteinIntake: 0,
-    proteinGoal: 150,
-    fatIntake: 0,
-    fatGoal: 75,
-    userUploaded: true,
-    meals: Array.of()
+    baseGoal: 2000,
+    foodCalories: 0,
+    remainingCalories: 0,
+    consumptionPercentage: 0,
+    nutrients: getInitialNutrients(),
+    meals: [],
   },
-  
+
   onShow() {
-    const systemInfo = wx.getSystemInfoSync();
-    const currentDate = this.getCurrentDateFormatted();
-    const accessToken = wx.getStorageSync('openId');
-    console.log('Access token is Bearer' + accessToken);
-    this.setData({
-      screenWidth: systemInfo.screenWidth
-    });
+    this.getDailyEnergy();
+    this.getFoodRecords();
+    this.drawCalorieCircle()
+  },
 
-    wx.request({
-      url: `${endpoint}/user/daily_energy`,
-      method: 'GET', // The HTTP method
-      header: {
-        'accept': 'application/json', // The Accept header
-        'Authorization': `Bearer ${accessToken}` // The Authorization header
-      },
-      success: (res) => {
-        console.log('Get user daily energy ' + res.statusCode);
-        console.log(res.data);
-        if (res.data && typeof res.data === 'object' && 'data' in res.data) {
-          if (Object.keys(res.data.data).length === 0) {
-            console.error('Empty result');
-          } else {
-            console.log(res.data.data);
-            if (typeof res.data.data === 'string') {
-            const resJson = JSON.parse(res.data.data)
-            this.setData({
-              goal: resJson.target_energy.calories,
-              carbGoal: resJson.target_energy.carbs,
-              proteinGoal: resJson.target_energy.protein,
-              fatGoal: resJson.target_energy.fat,
-              intake: resJson.actual_energy.calories,
-              carbIntake: resJson.actual_energy.carbs,
-              proteinIntake: resJson.actual_energy.protein,
-              fatIntake: resJson.actual_energy.fat
-            })
+  drawCalorieCircle() {
+    const query = wx.createSelectorQuery()
+    query.select('#calorieCanvas')
+      .fields({ node: true, size: true })
+      .exec((res) => {
+        const canvas = res[0].node
+        const ctx = canvas.getContext('2d')
 
-            console.log(this.data.goal);
-            const goal = this.data.goal;
-            const intake = this.data.intake;
-            this.drawRadialBar(goal, intake); // Example percentage value
-            this.drawHorizontalBars([
-              { label: `碳水 ${this.data.carbIntake}/${this.data.carbGoal}g`, value: this.data.carbIntake/this.data.carbGoal*100 },
-              { label: `蛋白质 ${this.data.proteinIntake}/${this.data.proteinGoal}g`, value:  this.data.proteinIntake/this.data.proteinGoal*100},
-              { label: `脂肪 ${this.data.fatIntake}/${this.data.fatGoal}g`, value:  this.data.fatIntake/this.data.fatGoal*100}
-            ]);
-          }
+        const dpr = wx.getSystemInfoSync().pixelRatio
+        canvas.width = res[0].width * dpr
+        canvas.height = res[0].height * dpr
+        ctx.scale(dpr, dpr)
+
+        const centerX = canvas.width / (2 * dpr)
+        const centerY = canvas.height / (2 * dpr)
+        const radius = 80
+
+        // Background circle
+        ctx.beginPath()
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI)
+        ctx.strokeStyle = '#e2e8f0'
+        ctx.lineWidth = 12
+        ctx.stroke()
+
+        // Consumption arc
+        const startAngle = -Math.PI / 2
+        const endAngle = startAngle + (2 * Math.PI * Math.min(this.data.consumptionPercentage, 100) / 100)
+
+        if (this.data.consumptionPercentage > 0) {
+          ctx.beginPath()
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle)
+          ctx.strokeStyle = '#3b82f6'
+          ctx.lineWidth = 12
+          ctx.lineCap = 'round'
+          ctx.stroke()
         }
-      }
+
+        // Surplus arc (if applicable)
+        if (this.data.consumptionPercentage > 100) {
+          const surplusEndAngle = endAngle + (2 * Math.PI * (this.data.consumptionPercentage - 100) / 100)
+          ctx.beginPath()
+          ctx.arc(centerX, centerY, radius, endAngle, surplusEndAngle)
+          ctx.strokeStyle = '#f97316'
+          ctx.lineWidth = 12
+          ctx.lineCap = 'round'
+          ctx.stroke()
+        }
+
+        // Text
+        ctx.fillStyle = '#000000'
+        ctx.font = 'bold 32px sans-serif'
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(this.data.remainingCalories.toString(), centerX, centerY - 10)
+
+        ctx.font = '16px sans-serif'
+        ctx.fillText('剩余', centerX, centerY + 15)
+      })
+  },
+
+  async getDailyEnergy() {
+    try {
+      const response = await getDailyEnergy();
+      const res = response.data;
+      console.log('Daily energy result ' + JSON.stringify(res));
+      
+      this.setData({
+        baseGoal: res.target_energy.calories,
+        foodCalories: res.actual_energy.calories,
+        remainingCalories: res.target_energy.calories - res.actual_energy.calories,
+        consumptionPercentage: (res.actual_energy.calories / res.target_energy.calories) * 100,
+        nutrients: getNutrients({
+          carbGoal: res.target_energy.carbs,
+          proteinGoal: res.target_energy.protein,
+          fatGoal: res.target_energy.fat,
+          foodCarb: res.actual_energy.carbs,
+          foodProtein: res.actual_energy.protein,
+          foodFat: res.actual_energy.fat,
+        }),
+      })
+    } catch (error) {
+      console.error('Get user daily energy info err:', error);
+      wx.showToast({ title: '获取用户营养信息失败', icon: 'error' });
     }
-  });
+    
+  },
 
-  console.log('Current date is ', currentDate);
-  wx.request({
-      url: `${endpoint}/food/food_records/?record_date=${currentDate}`,
-      method: 'GET', // The HTTP method
-      header: {
-        'accept': 'application/json', // The Accept header
-        'Authorization': `Bearer ${accessToken}` // The Authorization header
-      },
-      success: (res) => {
-        const result =res.data.data
-        console.log(result)
-        if (Array.isArray(result)) {
-          this.setData({
-            'meals': result,
-          })
-        }
-        
-      },
-      fail: (err) => {
-        console.error(err.errMsg)
+  async getFoodRecords() {
+    const currentDate = getCurrentDateFormatted();
+    try {
+      const response = await getFoodRecords(currentDate);
+
+      if(Object.keys(response).length === 0) {
+        console.log('Response is empty');
+        return ;
+      } else {
+        const res = response.data;
+        console.log('Food records ' + JSON.stringify(response));
+        this.setData({
+          meals: res,
+        })
       }
+    } catch (error) {
+      console.error('Get user food records err:', error);
+      wx.showToast({ title: '获取饮食记录失败', icon: 'error' });
+    }
+  },
+
+  handleNavigation(e: WechatMiniprogram.BaseEvent) {
+    const mealItem = e.currentTarget.dataset.item;
+    console.log('Selected meal:', mealItem);
+
+    wx.setStorageSync('mealSummary', mealItem);
+    wx.navigateTo({
+      url: '/pages/meal/meal',
     })
   },
 
-  rpxToPx(rpx: number) {
-    return (rpx * this.data.screenWidth) / 750;
-  },
-
-  drawRadialBar(goal: number, intake: number) {
-    const percentage = (intake / goal) * 100;
-    const remaining = goal - intake;
-    console.log('percentage: ' + percentage);
-    console.log('remaining: ' + remaining);
-
-    const query = wx.createSelectorQuery();
-    query.select('#radialBarCanvas')
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        const canvas = res[0].node;
-        const ctx = canvas.getContext('2d');
-        const dpr = wx.getSystemInfoSync().pixelRatio;
-        canvas.width = res[0].width * dpr;
-        canvas.height = res[0].height * dpr;
-        ctx.scale(dpr, dpr);
-
-        const radiusInRpx = 125;
-        const radius = this.rpxToPx(radiusInRpx);
-        const centerX = res[0].width / 2;
-        const centerY = res[0].height / 2;
-        const startAngle = 0;
-        const endAngle = percentage > 100 ? 2 * Math.PI : (percentage / 100) * 2 * Math.PI;
-
-        // Draw background circle
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.lineWidth = 12;
-        ctx.strokeStyle = '#e6e6e6';
-        ctx.stroke();
-
-        // Draw foreground arc
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        ctx.lineWidth = 12;
-        ctx.strokeStyle = '#1AAD19';
-        ctx.stroke();
-
-        // Draw surplus arc
-
-
-        // Draw the percentage text
-        ctx.font = '18px Arial';
-        ctx.fillStyle = '#000';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`剩余：${remaining}`, centerX, centerY);
-      });
-    },
-
-  drawHorizontalBars(data: Item[]) {
-    const query = wx.createSelectorQuery();
-    query.select('#horizontalBarCanvas')
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        const canvas = res[0].node;
-        const ctx = canvas.getContext('2d');
-        const dpr = wx.getSystemInfoSync().pixelRatio;
-        canvas.width = res[0].width * dpr;
-        canvas.height = res[0].height * dpr;
-        ctx.scale(dpr, dpr);
-
-        const startX = 25;
-        const startY = 20; // Starting Y position for horizontal bars
-        const barWidthInRpx = 375;
-        const barWidth = this.rpxToPx(barWidthInRpx);
-        const barHeight = 15;
-        const gap = 30; // Gap between bars
-
-        data.forEach((item, index) => {
-          const yPosition = startY + index * gap;
-
-          // Draw background bar
-          ctx.beginPath();
-          ctx.rect(startX, yPosition, barWidth, barHeight);
-          ctx.fillStyle = '#e6e6e6';
-          ctx.fill();
-
-          // Draw foreground bar
-          ctx.beginPath();
-          ctx.rect(startX, yPosition, this.rpxToPx(item.value * 3.75), barHeight); // item.value * 1.5 to scale the bar width
-          ctx.fillStyle = '#1AAD19';
-          ctx.fill();
-
-          // Draw text label
-          ctx.font = '12px Arial';
-          ctx.fillStyle = '#000';
-          ctx.fillText(item.label, startX + barWidth + 10, yPosition + barHeight - 5);
-        });
-      });
-    },
-
-    getCurrentDateFormatted(): string {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = (today.getMonth() + 1).toString().padStart(2, '0');
-      const day = today.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    },
-
-    validFoodRecords(): boolean {
-      return (
-        true
-      )
-    }
+  handleAddMeal() {
+    // Navigate to the target page programmatically
+    wx.switchTab({
+      url: '/pages/upload/upload',
+    });
+  }
 })

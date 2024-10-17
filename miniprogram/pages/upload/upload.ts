@@ -70,7 +70,7 @@ Page({
       });
       this.clearLocalData();
       wx.switchTab({
-        url: '/pages/analysis/analysis'
+        url: '/pages/home/home'
       });
     }
   },

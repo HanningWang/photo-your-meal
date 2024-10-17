@@ -3,16 +3,13 @@
     "pages/initial/initial",
     "pages/profile/profile",
     "pages/phoneNumber/phoneNumber",
-    "pages/analysis/analysis",
     "pages/meal/meal",
     "pages/questionnaire/questionnaire",
     "pages/home/home",
     "pages/upload/upload",
     "pages/user/user",
-    "pages/summary/summary",
     "pages/info/info",
-    "pages/records/records",
-    "pages/logs/logs"
+    "pages/records/records"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -21,7 +18,7 @@
   },
   "tabBar": {
     "list": [{
-      "pagePath": "pages/analysis/analysis",
+      "pagePath": "pages/home/home",
       "iconPath": "images/edit.png",
       "text": "记录"
     },

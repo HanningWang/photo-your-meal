@@ -13,7 +13,7 @@ Page({
 
   onReturnHome() {
     wx.switchTab({
-      url: '/pages/analysis/analysis'
+      url: '/pages/home/home'
     })
   }
 })

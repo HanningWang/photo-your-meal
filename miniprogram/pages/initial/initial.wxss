@@ -4,11 +4,11 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+  background-color: #00d1cd;
 }
 
 .logo {
-  width: 200rpx;
-  height: 200rpx;
+  width: 100%;
   margin-bottom: 40rpx;
 }
 

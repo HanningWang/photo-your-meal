@@ -44,8 +44,10 @@
             <text>卡路里: {{item.calories}}卡</text>
           </view>
           <view class="dish-info-item">
-            <image class="icon-small" src="../../images/weight.svg" />
-            <text>重量: {{item.weight}}克</text>
+            <block wx:if="{{item.weight}}">
+              <image class="icon-small" src="../../images/weight.svg" />
+              <text>重量: {{item.weight}}克</text>
+            </block>
           </view>
         </view>
         <view class="dish-info-row">

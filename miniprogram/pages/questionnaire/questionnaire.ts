@@ -57,7 +57,7 @@ Page({
       });
 
       wx.switchTab({
-        url: '/pages/analysis/analysis'
+        url: '/pages/home/home'
       });
     } catch (error) {
       console.error('Update user info error:', error);
