@@ -1,5 +1,5 @@
 import { getDailyEnergy, getFoodRecords } from '../../services/api';
-import { getNutrients, getMeals as getMockMeals, getInitialNutrients } from '../../services/nutritionService'
+import { getNutrients, getMockMeals, getInitialNutrients } from '../../services/nutritionService'
 import { getCurrentDateFormatted } from '../../utils/common';
 
 Page({
@@ -121,13 +121,13 @@ Page({
       } else {
         const res = response.data;
         console.log('Food records ' + JSON.stringify(response));
+        this.setData({
+          meals: res,
+        })
       }
-      this.setData({
-        meals: getMockMeals(),
-      })
     } catch (error) {
       console.error('Get user food records err:', error);
-      wx.showToast({ title: '获取用户饮食记录失败', icon: 'none' });
+      wx.showToast({ title: '获取饮食记录失败', icon: 'none' });
     }
   },
 
@@ -135,8 +135,9 @@ Page({
     const mealItem = e.currentTarget.dataset.item;
     console.log('Selected meal:', mealItem);
 
+    wx.setStorageSync('mealSummary', mealItem);
     wx.navigateTo({
-      url: 'pages/meal/meal',
+      url: '/pages/meal/meal',
     })
   },
 

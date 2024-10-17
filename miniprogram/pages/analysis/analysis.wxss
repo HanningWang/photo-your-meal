@@ -103,14 +103,6 @@
   height: 32rpx;
 }
 
-.icon-flag {
-  color: #22c55e;
-}
-
-.icon-utensils {
-  color: #3b82f6;
-}
-
 .nutrient-item {
   margin-bottom: 16rpx;
 }
@@ -205,6 +197,12 @@
   font-size: 24rpx;
   color: #6b7280;
   margin-left: 15rpx;
+  display: flex;
+  flex-direction: row;
+}
+
+.dish_name {
+  margin-right: 20rpx;
 }
 
 /* Style for the message */

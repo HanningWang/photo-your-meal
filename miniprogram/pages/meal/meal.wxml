@@ -1,7 +1,7 @@
 <view class="container">
   <!-- 餐食照片 -->
   <view class="food-image">
-    <image src="{{mealSummary.image_url}}" mode="aspectFill" />
+    <image src="{{mealSummary.image_data}}" mode="aspectFill" />
   </view>
 
   <!-- 营养摘要卡片 -->
@@ -11,22 +11,22 @@
       <view class="nutrition-summary">
         <view class="nutrition-item">
           <image class="icon" src="../../images/fire.svg" />
-          <text class="value">520</text>
+          <text class="value">{{mealSummary.calories}}卡</text>
           <text class="label">卡路里</text>
         </view>
         <view class="nutrition-item">
           <image class="icon" src="../../images/rice.svg" />
-          <text class="value">65克</text>
+          <text class="value">{{mealSummary.carbs}}克</text>
           <text class="label">碳水化合物</text>
         </view>
         <view class="nutrition-item">
           <image class="icon" src="../../images/meat.svg" />
-          <text class="value">20克</text>
+          <text class="value">{{mealSummary.protein}}克</text>
           <text class="label">蛋白质</text>
         </view>
         <view class="nutrition-item">
           <image class="icon" src="../../images/avocado.svg" />
-          <text class="value">25克</text>
+          <text class="value">{{mealSummary.fat}}克</text>
           <text class="label">脂肪</text>
         </view>
       </view>
@@ -34,32 +34,32 @@
   </view>
 
   <!-- 菜品卡片 -->
-  <view class="card" wx:for="{{dishes}}" wx:key="index">
+  <view class="card" wx:for="{{mealSummary.food_details.dishes}}" wx:key="index">
     <view class="card-content">
       <text class="dish-title">{{item.dish_name}}</text>
       <view class="dish-info">
         <view class="dish-info-row">
           <view class="dish-info-item">
             <image class="icon-small" src="../../images/fire.svg" />
-            <text>卡路里: {{item.calories}}</text>
+            <text>卡路里: {{item.calories}}卡</text>
           </view>
           <view class="dish-info-item">
             <image class="icon-small" src="../../images/weight.svg" />
-            <text>重量: {{item.weight}}</text>
+            <text>重量: {{item.weight}}克</text>
           </view>
         </view>
         <view class="dish-info-row">
           <view class="dish-info-item">
             <image class="icon-small" src="../../images/rice.svg" />
-            <text>碳水: {{item.carbs}}</text>
+            <text>碳水: {{item.carbs}}克</text>
           </view>
           <view class="dish-info-item">
             <image class="icon-small" src="../../images/meat.svg" />
-            <text>蛋白质: {{item.protein}}</text>
+            <text>蛋白质: {{item.protein}}克</text>
           </view>
           <view class="dish-info-item">
             <image class="icon-small" src="../../images/avocado.svg" />
-            <text>脂肪: {{item.fat}}</text>
+            <text>脂肪: {{item.fat}}克</text>
           </view>
         </view>
       </view>
@@ -71,7 +71,7 @@
         </view>
         <view class="dish-details-item">
           <image class="icon-small icon-star" src="../../images/star.svg" />
-          <text class="dish-details-label">营养价值：</text>
+          <text class="dish-details-label">营养：</text>
           <text>{{item.nutritional_value}}</text>
         </view>
       </view>

@@ -121,6 +121,7 @@
 .dish-details-label {
   font-weight: 500;
   margin-right: 8rpx;
+  min-width: 100rpx;
 }
 
 .return-button {

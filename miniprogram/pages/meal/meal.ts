@@ -1,14 +1,14 @@
 Page({
   data: {
-    mealSummary: {},
+    mealSummary: wx.getStorageSync('mealSummary'),
+    imgSrc: '',
   },
 
   onShow() {
-    const mealSummary = wx.getStorageSync('mealSummary');
-    console.log('Meal summary is ' + mealSummary)
+    console.log('Meal summary is ' + this.data.mealSummary)
     this.setData({
-      mealSummary: mealSummary,
-    });
+      imgSrc: this.data.mealSummary.image_data
+    })
   },
 
   onReturnHome() {

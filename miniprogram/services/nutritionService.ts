@@ -14,7 +14,7 @@ export function getNutrients(data: any) {
   ];
 }
 
-export function getMeals() {
+export function getMockMeals() {
   return [
     {
       name: "早餐",

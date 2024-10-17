@@ -1,7 +1,10 @@
+import { getMockMeals } from "../../services/nutritionService";
+
 Page({
   data: {
     selectedDate: '',
-    formattedDate: ''
+    formattedDate: '',
+    meals: getMockMeals(),
   },
 
   onLoad() {

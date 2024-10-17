@@ -1,3 +1,10 @@
+.container {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .date-picker {
   display: flex;
   justify-content: center;
@@ -5,7 +12,6 @@
   padding: 20rpx 0;
   background-color: #ffffff;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
 }
 
 .picker-view {
@@ -29,3 +35,113 @@
 }
 
 /* Rest of the existing styles... */
+.card {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 20rpx;
+  width: 95%;
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 20rpx;
+}
+
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid #e5e7eb;
+  margin-bottom: 16rpx;
+}
+
+.meal-line {
+  display: flex;
+  flex-direction: row;
+  margin-left: 15rpx;
+}
+
+.meal-name {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.meal-details {
+  font-size: 28rpx;
+  color: #3b82f6;
+  margin-right: 20rpx;
+}
+
+.meal-content {
+  display: flex;
+}
+
+.meal-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+
+.meal-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.meal-nutrients {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rpx;
+  font-size: 24rpx;
+}
+
+.meal-dishes {
+  font-size: 24rpx;
+  color: #6b7280;
+  margin-left: 15rpx;
+}
+
+/* Style for the message */
+.empty-message {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Style for the clickable '去添加' link */
+.add-link {
+  font-size: 16px;
+  color: #1cbbb4; /* Custom color for the link */
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.empty-meal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.empty-message {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+
+.iconfont {
+  margin-right: 8rpx;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.small-icon {
+  margin-right: 4rpx;
+  width: 32rpx;
+  height: 32rpx;
+}

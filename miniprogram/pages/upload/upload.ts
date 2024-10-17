@@ -51,9 +51,12 @@ Page({
     try {
       const res = await uploadFoodImage(mealType, imageSrc);
       const resData = JSON.parse(res).data;
-      console.log('Upload successful:',  res);
-      console.log(resData);
+      console.log('Upload successful:',  resData);
       // Handle the response data as needed
+      if (!resData.image_data) {
+        resData.image_data = imageSrc;
+      }
+      console.log('Save mealSummary ' + JSON.stringify(resData));
       wx.setStorageSync('mealSummary', resData);
 
       this.clearLocalData();

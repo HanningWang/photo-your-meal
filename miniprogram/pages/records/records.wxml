@@ -1,6 +1,6 @@
 <view class="container">
   <view class="date-picker">
-    <picker mode="date" value="{{selectedDate}}" start="2020-01-01" end="2030-12-31" bindchange="onDateChange">
+    <picker mode="date" value="{{selectedDate}}" start="2024-01-01" end="2024-12-31" bindchange="onDateChange">
       <view class="picker-view">
         <text class="date-text">{{formattedDate}}</text>
         <text class="date-arrow">▼</text>
@@ -9,4 +9,49 @@
   </view>
 
   <!-- Rest of the existing content... -->
+  <block wx:if="{{meals.length > 0}}">
+    <view wx:for="{{meals}}" wx:key="name" class="card">
+    <view class="card-content">
+      <view class="meal-header">
+        <text class="meal-name">{{item.name}}</text>
+        <text class="meal-details" data-item="{{item}}" bindtap="handleNavigation">详细</text>
+      </view>
+      <view class="meal-content">
+        <image src="{{item.imageUrl}}" mode="aspectFill" class="meal-image"></image>
+        <view class="meal-info">
+          <view class="meal-nutrients">
+            <view class="meal-line">
+              <image src="../../images/fire.svg" class="small-icon"></image>
+              <text>卡路里: {{item.calories}}</text>
+            </view>
+            <view class="meal-line">
+              <image src="../../images/rice.svg" class="small-icon"></image>
+              <text>碳水: {{item.carbs}}g</text>
+            </view>
+            <view class="meal-line">
+              <image src="../../images/meat.svg" class="small-icon"></image>
+              <text>蛋白质: {{item.protein}}g</text>
+            </view>
+            <view class="meal-line">
+              <image src="../../images/avocado.svg" class="small-icon"></image>
+              <text>脂肪: {{item.fat}}g</text>
+            </view>
+          </view>
+          <view class="meal-line">
+            <image src="../../images/recipe.svg" class="small-icon"></image>
+            <text class="meal-dishes">{{item.dishes}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  </block>
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-content empty-meal-content">
+        <text class="empty-message">暂无饮食记录</text>
+      </view>
+    </view>
+  </block>
 </view>

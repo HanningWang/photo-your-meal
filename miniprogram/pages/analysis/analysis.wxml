@@ -51,11 +51,11 @@
     <view wx:for="{{meals}}" wx:key="name" class="card">
     <view class="card-content">
       <view class="meal-header">
-        <text class="meal-name">{{item.name}}</text>
+        <text class="meal-name">{{item.meal_type}}</text>
         <text class="meal-details" data-item="{{item}}" bindtap="handleNavigation">详细</text>
       </view>
       <view class="meal-content">
-        <image src="{{item.imageUrl}}" mode="aspectFill" class="meal-image"></image>
+        <image src="{{item.image_data}}" mode="aspectFill" class="meal-image"></image>
         <view class="meal-info">
           <view class="meal-nutrients">
             <view class="meal-line">
@@ -77,7 +77,11 @@
           </view>
           <view class="meal-line">
             <image src="../../images/recipe.svg" class="small-icon"></image>
-            <text class="meal-dishes">{{item.dishes}}</text>
+            <view class="meal-dishes">
+              <view wx:for="{{item.food_details.dishes}}" wx:key="index">
+                <text class="dish_name">{{item.dish_name}}</text>
+              </view>
+            </view>  
           </view>
         </view>
       </view>
