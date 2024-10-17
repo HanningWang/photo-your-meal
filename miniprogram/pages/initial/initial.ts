@@ -35,7 +35,7 @@ Page({
       const { code } = await wx.login();
       console.log('code ' + code);
 
-      const loginResult = await login({ platform: 'app', code: code });
+      const loginResult = await login({ platform: 'wechat', code: code });
       console.log('login result ' + loginResult.data.access_token)
       setToken(loginResult.data.access_token);
 

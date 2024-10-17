@@ -1,0 +1,97 @@
+<view class="container">
+  <view class="header">
+    <view class="avatar">
+      <image class="avatar" src="{{avatarUrl}}" mode="aspectFit"></image>
+    </view>
+    <text class="nickname">{{nickname}}</text>
+  </view>
+  
+  <view class="main">
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">我的信息</text>
+        <view class="edit-button" bindtap="handleEdit" wx:if="{{!isEditing}}">
+          <text class="iconfont icon-edit"></text>
+          <text>编辑</text>
+        </view>
+      </view>
+      <view class="card-content">
+        <form>
+          <view class="form-item">
+            <text class="label">性别</text>
+            <block wx:if="{{isEditing}}">
+              <radio-group bindchange="handleRadioChange">
+                <label><radio value="1" checked="{{userInfo.gender == 1}}"/>男</label>
+                <label><radio value="0" checked="{{userInfo.gender == 0}}"/>女</label>
+              </radio-group>
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.gender == 1 ? '男' : '女'}}</text>
+            </block>
+          </view>
+
+          <view class="form-item">
+            <text class="label">身高 (cm)</text>
+            <block wx:if="{{isEditing}}">
+              <input type="number" value="{{userInfo.height}}" data-field="height" bindinput="handleChange" />
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.height}} cm</text>
+            </block>
+          </view>
+
+          <view class="form-item">
+            <text class="label">体重 (kg)</text>
+            <block wx:if="{{isEditing}}">
+              <input type="number" value="{{userInfo.weight}}" data-field="weight" bindinput="handleChange" />
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.weight}} kg</text>
+            </block>
+          </view>
+
+          <view class="form-item">
+            <text class="label">生日</text>
+            <block wx:if="{{isEditing}}">
+              <picker mode="date" value="{{userInfo.birthday}}" data-field="birthday" bindchange="handlePickerChange">
+                <view class="picker">{{userInfo.birthday}}</view>
+              </picker>
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.birthday}}</text>
+            </block>
+          </view>
+
+          <view class="form-item">
+            <text class="label">运动习惯</text>
+            <block wx:if="{{isEditing}}">
+              <picker range="{{['从不', '偶尔', '经常']}}" value="{{['从不', '偶尔', '经常'].indexOf(userInfo.exercise_frequency)}}" data-field="exercise_frequency" bindchange="handlePickerChange">
+                <view class="picker">{{userInfo.exercise_frequency}}</view>
+              </picker>
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.exercise_frequency}}</text>
+            </block>
+          </view>
+
+          <view class="form-item">
+            <text class="label">目标</text>
+            <block wx:if="{{isEditing}}">
+              <picker range="{{['减重', '维持', '增肌']}}" value="{{['减重', '维持', '增肌'].indexOf(userInfo.target)}}" data-field="target" bindchange="handlePickerChange">
+                <view class="picker">{{userInfo.target}}</view>
+              </picker>
+            </block>
+            <block wx:else>
+              <text class="value">{{userInfo.target}}</text>
+            </block>
+          </view>
+
+          <block wx:if="{{isEditing}}">
+            <button class="save-button" bindtap="handleSave">保存</button>
+          </block>
+        </form>
+      </view>
+    </view>
+  </view>
+  <button class="back-button" bindtap="handleBack">返回</button>
+</view>

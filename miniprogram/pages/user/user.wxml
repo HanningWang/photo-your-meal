@@ -1,27 +1,22 @@
 <!-- pages/user/user.wxml -->
-<view class="user-profile">
-
-<!-- User Info Section -->
-<navigator url="/pages/login/login" class="user-info">
-  <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
-  <text class="username">{{userInfo.nickname}}</text>
-</navigator>
-
-<!-- Clickable Cells -->
-<mp-cells>
-
-  <mp-cell link url="/pages/info/info">
-    <view slot="title">我的信息</view>
-  </mp-cell>
-
-  <mp-cell link url="/pages/records/records">
-    <view slot="title">我的记录</view>
-  </mp-cell>
-
-  <mp-cell link url="/pages/contact/contact">
-    <view slot="title">联系我们</view>
-  </mp-cell>
-
-</mp-cells>
-
+<view class="user-container">
+  <view class="header">
+    <image class="avatar" src="{{userInfo.avatarUrl || '../../images/user.png'}}" mode="aspectFill"></image>
+    <text class="username">{{userInfo.nickName || '用户名'}}</text>
+  </view>
+  
+  <view class="menu-list">
+    <view class="menu-item" bindtap="navigateTo" data-page="myInfo">
+      <text>我的信息</text>
+      <image class="arrow" src="../../images/arrow-right.svg" mode="aspectFit"></image>
+    </view>
+    <view class="menu-item" bindtap="navigateTo" data-page="myRecords">
+      <text>我的记录</text>
+      <image class="arrow" src="../../images/arrow-right.svg" mode="aspectFit"></image>
+    </view>
+    <view class="menu-item" bindtap="navigateTo" data-page="contactUs">
+      <text>联系我们</text>
+      <image class="arrow" src="../../images/arrow-right.svg" mode="aspectFit"></image>
+    </view>
+  </view>
 </view>

@@ -10,6 +10,8 @@
     "pages/upload/upload",
     "pages/user/user",
     "pages/summary/summary",
+    "pages/info/info",
+    "pages/records/records",
     "pages/logs/logs"
   ],
   "window": {
